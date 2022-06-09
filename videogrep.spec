@@ -8,7 +8,7 @@ python_files = [
 
 a = Analysis(python_files,
              pathex=[],
-             binaries=[],
+             binaries=[('ffmpeg.exe', '.')],
              datas=[('videogrep\\*.py', 'videogrep'), ('videogrep\\model', 'videogrep\\model'), ('.\\..\\Lib\\site-packages\\vosk', 'vosk')],
              hiddenimports=[],
              hookspath=[],

@@ -5,6 +5,7 @@ Scripts\activate.bat
 git-clone https://github.com/vic4key/videogrep.git
 cd videogrep
 
+python -m pip install --upgrade pip
 pip install -r videogrep\requirements.txt
 pip install pyinstaller==4.10
 
@@ -12,7 +13,6 @@ pip install pyinstaller==4.10
 
 python main.py -i tests\manifesto.mp4 --transcribe # test - to make sure videogrep package works
 
-build.cmd
+builder.cmd
 
 videogrep -i tests\manifesto.mp4 --transcribe # test - to make sure exe works
-videogrep -i tests\manifesto.mp4 --ngrams 1   # test - to make sure exe works

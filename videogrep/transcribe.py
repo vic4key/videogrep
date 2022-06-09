@@ -47,7 +47,7 @@ def transcribe(videofile: str, model_path: Optional[str] = None) -> List[dict]:
 
     process = subprocess.Popen(
         [
-            "ffmpeg",
+            os.path.join(os.environ["cdir"], "ffmpeg"),
             "-nostdin",
             "-loglevel",
             "quiet",
