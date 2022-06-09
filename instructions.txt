@@ -1,0 +1,18 @@
+python -m venv videogrep-exe
+cd videogrep-exe
+Scripts\activate.bat
+
+git-clone https://github.com/vic4key/videogrep.git
+cd videogrep
+
+pip install -r videogrep\requirements.txt
+pip install pyinstaller==4.10
+
+# let copy overwrite `site-packages` to venv's `site-packages` to fix moviepy's bugs
+
+python main.py -i tests\manifesto.mp4 --transcribe # test - to make sure videogrep package works
+
+build.cmd
+
+videogrep -i tests\manifesto.mp4 --transcribe # test - to make sure exe works
+videogrep -i tests\manifesto.mp4 --ngrams 1   # test - to make sure exe works
