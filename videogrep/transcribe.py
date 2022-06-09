@@ -98,4 +98,9 @@ def transcribe(videofile: str, model_path: Optional[str] = None) -> List[dict]:
     with open(transcript_file, "w", encoding="utf-8") as outfile:
         json.dump(out, outfile)
 
+    from . import srtfile
+    transcript_file_srt = os.path.splitext(videofile)[0] + ".srt"
+    with open(transcript_file_srt, "w", encoding="utf-8") as outfile:
+        outfile.write(srtfile.from_list(out))
+
     return out
