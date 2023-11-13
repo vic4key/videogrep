@@ -1,7 +1,7 @@
 Videogrep
 =========
 
-Videogrep is a command line tool that searches through dialog in video files and makes supercuts based on what it finds. It will recognize `.srt` or `.vtt` subtitle tracks, or transcriptions that can be generated with vosk, pocketsphinx, and other tools.
+Videogrep is a command line tool that searches through dialog in video or audio files and makes supercuts based on what it finds. It will recognize `.srt` or `.vtt` subtitle tracks, or transcriptions that can be generated with vosk, pocketsphinx, and other tools.
 
 #### Examples
 
@@ -12,7 +12,7 @@ Videogrep is a command line tool that searches through dialog in video files and
 
 #### Tutorial
 
-See my blog for a short [tutorial on videogrep and yt-dlp](https://lav.io/notes/videogrep-tutorial/).
+See my blog for a short [tutorial on videogrep and yt-dlp](https://lav.io/notes/videogrep-tutorial/), and part 2, on [videogrep and natural language processing](https://lav.io/notes/videogrep-and-spacy/).
 
 ----
 
@@ -20,20 +20,13 @@ See my blog for a short [tutorial on videogrep and yt-dlp](https://lav.io/notes/
 
 Videogrep is compatible with Python versions 3.6 to 3.10.
 
+To install:
 
 ```
 pip install videogrep
 ```
 
-If you want to transcribe videos, you also need to install [ffmpeg](http://ffmpeg.org/) and [vosk](https://alphacephei.com/vosk/).
-
-If you're on a mac with homebrew you install ffmpeg with:
-
-```
-brew install ffmpeg
-```
-
-To install vosk:
+If you want to transcribe video or audio, you also need to install [vosk](https://alphacephei.com/vosk/):
 
 ```
 pip install vosk
@@ -46,12 +39,17 @@ Note: the previous version of videogrep supported pocketsphinx for speech-to-tex
 The most basic use:
 
 ```
-videogrep --input path/to/video --search 'search phrase'
+videogrep --input path/to/video.mp4 --search 'search phrase'
+```
+
+It works with audio too:
+```
+videogrep --input path/to/audio.mp3 --search 'search phrase'
 ```
 
 You can put any regular expression in the search phrase.
 
-**NOTE: videogrep requires a matching subtitle track with each video you want to use. The video file and subtitle file need to have the exact same name, up to the extension.** For example, `my_movie.mp4` and `my_movie.srt` will work, and `my_movie.mp4` and `my_movie_subtitle.srt` will *not* work.
+**NOTE: videogrep requires a matching subtitle track with each video you want to use. The video/audio file and subtitle file need to have the exact same name, up to the extension.** For example, `my_movie.mp4` and `my_movie.srt` will work, and `my_movie.mp4` and `my_movie_subtitle.srt` will *not* work.
 
 Videogrep will search for matching `srt` and `vtt` subtitles, as well as `json` transcript files that can be generated with the `--transcribe` argument.
 
@@ -59,12 +57,12 @@ Videogrep will search for matching `srt` and `vtt` subtitles, as well as `json` 
 
 #### `--input [filename(s)] / -i [filename(s)]`
 
-Video or videos to use as input. Most video formats should work.
+File or files to use as input. Most video or audio formats should work. If you mix audio and video input files, the resulting output will only be audio.
 
 
 #### `--output [filename] / -o [filename]`
 
-Name of the file to generate. By default this is `supercut.mp4`. Any standard video extension will also work.
+Name of the file to generate. By default this is `supercut.mp4`. Any standard video or audio extension will also work. (If you're using audio input or mixed audio and video input and you keep the default `supercut.mp4` as the output filename, videogrep will automatically change the output to `supercut.mp3`)
 
 Videogrep will also recognize the following extensions for saving files:
   * `.mpv.edl`: generates an edl file playable by [mpv](https://mpv.io/) (useful for previews)
@@ -123,7 +121,7 @@ Time in seconds to shift the shift the subtitles forwards or backwards.
 
 #### `--transcribe / -tr`
 
-Transcribe the video using [vosk](https://alphacephei.com/vosk/). This will generate a `.json` file in the same folder as the video. By default this uses vosk's small english model.
+Transcribe the video/audio using [vosk](https://alphacephei.com/vosk/). This will generate a `.json` file in the same folder as the video. By default this uses vosk's small english model.
 
 **NOTE:** Because of some compatibility issues, vosk must be installed separately with `pip install vosk`.
 
@@ -147,9 +145,17 @@ Exports clips as individual files rather than as a supercut.
 videogrep -i vid.mp4 --search 'whatever' --export-clips
 ```
 
+#### `--export-vtt / -ev`
+
+Exports the transcript of the supercut as a WebVTT file next to the video.
+
+```
+videogrep -i vid.mp4 --search 'whatever' --export-vtt
+```
+
 #### `--ngrams [num] / -n [num]`
 
-Shows common words and phrases from the video.
+Shows common words and phrases from the video or audio file.
 
 ```
 videogrep -i vid.mp4 --ngrams 1
@@ -174,3 +180,13 @@ Also see the examples folder for:
 * [silence extraction](https://github.com/antiboredom/videogrep/blob/master/examples/only_silence.py)
 * [automatically creating supercuts](https://github.com/antiboredom/videogrep/blob/master/examples/auto_supercut.py)
 * [creating supercuts based on youtube searches](https://github.com/antiboredom/videogrep/blob/master/examples/auto_youtube.py)
+* [creating supercuts from specific parts of speech](https://github.com/antiboredom/videogrep/blob/master/examples/parts_of_speech.py)
+* [creating supercuts from spacy pattern matching](https://github.com/antiboredom/videogrep/blob/master/examples/pattern_matcher.py)
+
+----
+
+## Credits
+
+Videogrep is maintained by [Sam Lavigne](https://lav.io), and built using [MoviePy](https://zulko.github.io/moviepy/) and [Vosk](https://alphacephei.com/vosk/). A big thanks goes out to all those who have [contributed](https://github.com/antiboredom/videogrep/graphs/contributors), particuarly to [Charlie Macquarie](https://charliemacquarie.com) for his efforts in getting the project to work with audio-only media.
+
+Videogrep has received financial support from the [Department of Digital Humanities, King’s College London](https://www.kcl.ac.uk/ddh) and from the [Clinic for Open Source Arts](https://clinicopensourcearts.org/).
