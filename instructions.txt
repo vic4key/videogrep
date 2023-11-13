@@ -1,4 +1,4 @@
-python3 -m venv videogrep-exe
+python -m venv videogrep-exe
 cd videogrep-exe
 Scripts\activate.bat
 
@@ -7,14 +7,14 @@ cd videogrep
 
 python -m pip install --upgrade pip
 pip install -r videogrep\requirements.txt
-pip install pyinstaller==4.10
+pip install pyinstaller
 
-# let copy overwrite `site-packages` to venv's `site-packages` to fix moviepy's bugs
-# patch file like `site-packages\moviepy\audio\io\readers.patch`
-# patch file like `site-packages\moviepy\video\io\ffmpeg_reader.patch`
+# let copy overwrite the `moviepy` folder from `videogrep-exe\videogrep\site-packages` to `videogrep-exe\Lib\site-packages\site-packages` to fix moviepy's bugs
 
-python main.py -i tests\manifesto.mp4 --transcribe # test - to make sure videogrep package works
+# test - to make sure run from code works
+python main.py -i tests\test_inputs\manifesto.mp4 --search "communism" --output tests\test_outputs\manifesto_supercut.mp4
 
 builder.cmd
 
-videogrep -i tests\manifesto.mp4 --transcribe # test - to make sure exe works
+# test - to make sure compiled exe works
+videogrep -i tests\test_inputs\manifesto.mp4 --search "communism" --output tests\test_outputs\manifesto_supercut.mp4

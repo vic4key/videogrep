@@ -6,7 +6,7 @@ IF EXIST "%FILE_NAME%.exe" (
 	DEL "%FILE_NAME%.exe"
 )
 
-python.exe -m PyInstaller --clean --onefile %FILE_NAME%.spec
+python.exe -m PyInstaller %FILE_NAME%.spec
 
 IF EXIST "dist\%FILE_NAME%.exe" (
 	COPY /Y "dist\%FILE_NAME%.exe" .
@@ -14,7 +14,6 @@ IF EXIST "dist\%FILE_NAME%.exe" (
 	ECHO Build FAILED
 )
 
-RMDIR /S /Q __pycache__
 RMDIR /S /Q build
 RMDIR /S /Q dist
 
